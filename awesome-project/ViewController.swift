@@ -56,22 +56,42 @@ extension ViewController: ARSCNViewDelegate {
             return
         }
         
-        let scene = SCNScene(named: "art.scnassets/pacman.scn")
+        //let material = SCNMaterial()
+        //material.diffuse.contents = UIImage(named: "art.scnassets/text.png")
         
+        let scene = SCNScene(named: "art.scnassets/tits.dae")
+        
+        var copiedNode: SCNNode? = nil
         for daeNode in (scene?.rootNode.childNodes)! {
-            let copiedNode = SCNNode(geometry: daeNode.geometry)
+            copiedNode = SCNNode(geometry: daeNode.geometry)
             
-            copiedNode.position = SCNVector3(
+            //copiedNode!.geometry?.materials = [material]
+            
+            copiedNode!.position = SCNVector3(
                 planeAnchor.center.x/* + copiedNode.position.x*/,
                 planeAnchor.center.y/* + copiedNode.position.y*/ + 1.0,
                 planeAnchor.center.z/* + copiedNode.position.z*/)
-            copiedNode.scale = SCNVector3(0.2, 0.2, 0.2)
+            copiedNode!.scale = SCNVector3(0.2, 0.2, 0.2)
             
-            node.addChildNode(copiedNode)
+            node.addChildNode(copiedNode!)
             //arView.scene.rootNode.addChildNode(daeNode)
         }
         
         print(planeAnchor.center)
+        
+        SCNTransaction.begin()
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.fromValue = copiedNode!.presentation.position
+        let x = copiedNode!.presentation.position.x + 1
+        let y = copiedNode!.presentation.position.y
+        let z = copiedNode!.presentation.position.z
+        animation.toValue = SCNVector3(x, y, z)
+        animation.duration = 0.5
+        animation.repeatCount = Float.greatestFiniteMagnitude
+        animation.autoreverses = true
+        copiedNode!.addAnimation(animation, forKey: "fgsfds")
+        SCNTransaction.commit()
+
 
 //        let sphere = SCNSphere(radius: 0.05)
 //        let sphereNode = SCNNode(geometry: sphere)
