@@ -14,6 +14,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
+        
+        let scene = SCNScene(named: "art.scnassets/main.scn")!
+        sceneView.scene = scene
     }
     
     override func viewWillAppear(_ animated: Bool) {
